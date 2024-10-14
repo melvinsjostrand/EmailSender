@@ -28,8 +28,16 @@ namespace WebApplication1
                     client.EnableSsl = true;
                     client.Credentials = new NetworkCredential(_emailFrom, _emailPassword);
 
-                    using (var mailMessage = new MailMessage(_emailFrom, email, subject, message))
+                    using (var mailMessage = new MailMessage())
                     {
+                        mailMessage.From = new MailAddress(_emailFrom);
+                        mailMessage.To.Add(email);
+                        mailMessage.Subject = subject;
+
+                        // Set the body to HTML content
+                        mailMessage.Body = message;
+                        mailMessage.IsBodyHtml = true; // Ensure the body is treated as HTML
+
                         await client.SendMailAsync(mailMessage);
                     }
                 }

@@ -18,23 +18,6 @@ namespace WebApplication1.Controllers
             connection = new MySqlConnection("server=localhost;uid=root;pwd=;database=UserManagement");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var receiver = "Nikodemiusivarsson@outlook.com"; // Replace with a valid email
-            var subject = "Jag använde mig av C# för att skicka detta"; // Replace with a valid subject
-            var message = "Du är ond som inte vill spela lol med mig </3."; // Replace with a valid message
-
-            // Ensure no empty values
-            if (string.IsNullOrEmpty(receiver) || string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(message))
-            {
-                return BadRequest("Email parameters cannot be empty.");
-            }
-
-            await _emailSender.SendEmailAsync(receiver, subject, message);
-            return Ok();
-        }
-
         [HttpGet("CreateAcc")]
         public async Task<IActionResult> CreateUser(User user)
         {
@@ -76,7 +59,9 @@ namespace WebApplication1.Controllers
                 var receiver = user.mail;
                 var subject = "Confirm Your Account Creation";
                 var confirmationLink = Url.Action("ConfirmUser", "Home", new { token = token }, Request.Scheme); // Generate a confirmation link
-                var bodyMessage = $"Dear {user.username}, please confirm your account creation by clicking this link: {confirmationLink}. This link will expire in 10 minutes.";
+                var bodyMessage = $@"
+                    <p>Dear {user.username},</p>
+                    <p>Click on the link:<a href='{confirmationLink}' style='color:blue;text-decoration:none;font-weight:bold;'>Create Account</a>. This link will expire in 10 minutes.</p>";
 
                 await _emailSender.SendEmailAsync(receiver, subject, bodyMessage);
 

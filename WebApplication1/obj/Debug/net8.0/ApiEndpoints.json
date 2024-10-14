@@ -1,16 +1,6 @@
 [
   {
     "ContainingType": "WebApplication1.Controllers.HomeController",
-    "Method": "Index",
-    "RelativePath": "Home",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApplication1.Controllers.HomeController",
     "Method": "ConfirmUser",
     "RelativePath": "Home/ConfirmUser",
     "HttpMethod": "GET",
