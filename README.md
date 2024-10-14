@@ -1,5 +1,7 @@
 I used phpmyadmin as an database, This is the tables you need and how you create them
-
+-You create an PendingUser 
+-You get an Confirm Email
+-You confirm the Email and the user get created
 
 CREATE TABLE PendingUser (
     Id INT AUTO_INCREMENT PRIMARY KEY,
