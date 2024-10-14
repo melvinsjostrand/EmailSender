@@ -1,4 +1,6 @@
 I used phpmyadmin as an database, This is the tables you need and how you create them
+
+
 CREATE TABLE PendingUser (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Role INT,
