@@ -1,4 +1,4 @@
-I used phpmyadmin as an database, This is the tables you need and how you create them
+I used MariaDB as an database, This is the tables you need and how you create them
 
 -You create an PendingUser 
 
