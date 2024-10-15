@@ -21,7 +21,7 @@ namespace WebApplication1.Controllers
         [HttpGet("CreateAcc")]
         public async Task<IActionResult> CreateUser(User user)
         {
-            if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.mail) || string.IsNullOrEmpty(user.password) || string.IsNullOrEmpty(user.address))
+            if (string.IsNullOrEmpty(user.username) || string.IsNullOrEmpty(user.mail) || string.IsNullOrEmpty(user.password))
             {
                 return BadRequest("All fields must be filled out.");
             }
@@ -61,7 +61,10 @@ namespace WebApplication1.Controllers
                 var confirmationLink = Url.Action("ConfirmUser", "Home", new { token = token }, Request.Scheme); // Generate a confirmation link
                 var bodyMessage = $@"
                     <p>Dear {user.username},</p>
-                    <p>Click on the link:<a href='{confirmationLink}' style='color:blue;text-decoration:none;font-weight:bold;'>Create Account</a>. This link will expire in 10 minutes.</p>";
+                    <p>Thank you for signing up! To complete your registration and activate your account, please verify your email by clicking the button below</p>
+                    <a href='{confirmationLink}' style='color:blue;text-decoration:none;font-weight:bold;'>Create Account</a>.
+                    <p> If you did not create an account with us, you can safely ignore this email. Thank you</p>
+                    <p>This link will expire in 10 minutes</p>";
 
                 await _emailSender.SendEmailAsync(receiver, subject, bodyMessage);
 
@@ -77,7 +80,7 @@ namespace WebApplication1.Controllers
                 connection.Close();
             }
         }
-
+     
         [HttpGet("ConfirmUser")]
         public async Task<IActionResult> ConfirmUser(string token)
         {
@@ -116,7 +119,22 @@ namespace WebApplication1.Controllers
                     query.Parameters.AddWithValue("@token", token);
                     query.ExecuteNonQuery();
 
-                    return Ok("Account confirmed and created successfully.");
+                    // Return a success message with auto-close functionality
+                    return Content(@"
+                <html>
+                    <head>
+                        <title>Account Confirmed</title>
+                    </head>
+                    <body>
+                        <p>Your account has been confirmed and created successfully.</p>
+                        <p>This window will close automatically in 1 seconds.</p>
+                        <script>
+                            setTimeout(function() {
+                                window.close();
+                            }, 1000); // Close the window after 1 seconds
+                        </script>
+                    </body>
+                </html>", "text/html");
                 }
                 else
                 {
@@ -135,11 +153,7 @@ namespace WebApplication1.Controllers
 
 
 
-        private string CheckIfUniqueUser(User user)
-        {
-            // Implement your logic to check if the user is unique (e.g., check if the email or username already exists)
-            return string.Empty; // Placeholder
-        }
+
         private bool IsValidEmail(string email)
         {
             try

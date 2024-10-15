@@ -30,7 +30,7 @@ namespace WebApplication1
 
                     using (var mailMessage = new MailMessage())
                     {
-                        mailMessage.From = new MailAddress(_emailFrom);
+                        mailMessage.From = new MailAddress(_emailFrom, "Verification Mail");
                         mailMessage.To.Add(email);
                         mailMessage.Subject = subject;
 
